@@ -1,19 +1,21 @@
-# Use Node.js 18 as base image
-FROM node:18
+# apps/api/Dockerfile
+FROM node:20-alpine
 
-# Create app directory
 WORKDIR /app
 
-# Install dependencies (only package files first to leverage Docker cache)
+# Only copy package files first for better layer caching
 COPY package*.json ./
-RUN npm install
+
+# Install prod deps
+RUN npm ci --omit=dev
 
 # Copy the rest of the app
 COPY . .
 
-# App port (Railway will respect PORT env var too)
-EXPOSE 3000
+# Make it clear to the platform what we use
+ENV NODE_ENV=production
+ENV PORT=8080
+EXPOSE 8080
 
-# Start the app
-CMD ["npm", "start"]
-
+# Start the server
+CMD ["node", "server.js"]
