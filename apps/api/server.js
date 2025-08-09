@@ -4,10 +4,10 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Optional: so HTTP logs stop showing 502s for /favicon.ico
+// Optional: stop 502 spam on /favicon.ico
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
-// Basic health + home routes
+// Health + home
 app.get("/healthz", (req, res) => res.status(200).json({ status: "ok" }));
 
 app.get("/", (req, res) => {
@@ -18,13 +18,13 @@ app.get("/", (req, res) => {
   `);
 });
 
-// Global error handler (helps avoid 502s bubbling up)
+// Error handler
 app.use((err, req, res, next) => {
   console.error("Server error:", err);
   res.status(500).json({ error: "Internal Server Error" });
 });
 
-// IMPORTANT: bind on 0.0.0.0 and use Railway's PORT
+// IMPORTANT for Railway
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listening on http://0.0.0.0:${PORT}`);
 });
