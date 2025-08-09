@@ -1,30 +1,20 @@
-// apps/api/server.js  (CommonJS version)
-const express = require("express");
+import express from 'express';
+import cors from 'cors';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
-// Optional: stop 502 spam on /favicon.ico
-app.get("/favicon.ico", (req, res) => res.status(204).end());
+app.use(cors());
+app.use(express.json());
 
-// Health + home
-app.get("/healthz", (req, res) => res.status(200).json({ status: "ok" }));
-
-app.get("/", (req, res) => {
-  res.send(`
-    <h1>KSA Finder API is up ✅</h1>
-    <p>Environment PORT: ${PORT}</p>
-    <p>Health check: <a href="/healthz">/healthz</a></p>
-  `);
+app.get('/', (_req, res) => {
+  res.send('ksa-finder API is running');
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error("Server error:", err);
-  res.status(500).json({ error: "Internal Server Error" });
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
 });
 
-// IMPORTANT for Railway
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on http://0.0.0.0:${PORT}`);
+app.listen(port, () => {
+  console.log(`API listening on port ${port}`);
 });
