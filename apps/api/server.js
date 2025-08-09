@@ -1,19 +1,9 @@
-// apps/api/server.js
 import express from "express";
-
-const PORT = process.env.PORT || 8080;
-const HOST = "0.0.0.0"; // important: listen on all interfaces, not just localhost
+import cors from "cors";
 
 const app = express();
+app.use(cors());
+app.get("/", (req, res) => res.send("OK"));
 
-app.get("/", (_req, res) => {
-  res.send("OK from ksa-finder API");
-});
-
-app.get("/health", (_req, res) => {
-  res.json({ ok: true });
-});
-
-app.listen(PORT, HOST, () => {
-  console.log(`Server listening on http://${HOST}:${PORT}`);
-});
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
