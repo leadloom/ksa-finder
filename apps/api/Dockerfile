@@ -1,20 +1,17 @@
-# apps/api/Dockerfile
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy only package manifests first (better caching)
+# copy only package files first to leverage Docker layer cache
 COPY package*.json ./
 
-# Install deps (ci requires a lockfile; use install instead)
+# install prod deps (no lockfile required)
 RUN npm install --omit=dev
 
-# Now copy the rest of the app
+# now copy the rest
 COPY . .
 
-# Railway expects the server to listen on this port
-ENV PORT=8080
+ENV NODE_ENV=production
 EXPOSE 8080
 
-# Start your API (uses "start": "node server.js" from package.json)
 CMD ["npm", "start"]
