@@ -1,21 +1,19 @@
 // apps/api/server.js
-const express = require('express');
-const cors = require('cors');
+import express from "express";
+
+const PORT = process.env.PORT || 8080;
+const HOST = "0.0.0.0"; // important: listen on all interfaces, not just localhost
 
 const app = express();
-app.use(cors());
 
-// Simple health + root routes
-app.get('/', (req, res) => {
-  res.send('OK: ksa-finder API is running');
+app.get("/", (_req, res) => {
+  res.send("OK from ksa-finder API");
 });
 
-app.get('/healthz', (req, res) => {
-  res.send('ok');
+app.get("/health", (_req, res) => {
+  res.json({ ok: true });
 });
 
-// IMPORTANT: use the port Railway provides
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`✅ Server listening on ${port}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Server listening on http://${HOST}:${PORT}`);
 });
