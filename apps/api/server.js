@@ -1,20 +1,21 @@
-import express from 'express';
-import cors from 'cors';
+// apps/api/server.js
+const express = require('express');
+const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3000;
-
 app.use(cors());
-app.use(express.json());
 
-app.get('/', (_req, res) => {
-  res.send('ksa-finder API is running');
+// Simple health + root routes
+app.get('/', (req, res) => {
+  res.send('OK: ksa-finder API is running');
 });
 
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
+app.get('/healthz', (req, res) => {
+  res.send('ok');
 });
 
+// IMPORTANT: use the port Railway provides
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`API listening on port ${port}`);
+  console.log(`✅ Server listening on ${port}`);
 });
