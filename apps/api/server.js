@@ -1,5 +1,5 @@
-// apps/api/server.js
-import express from "express";
+// apps/api/server.js (CommonJS)
+const express = require("express");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,22 +9,22 @@ app.get("/", (req, res) => {
   res.send("KSA Finder API is running ✅");
 });
 
-// Healthcheck for uptime
+// Healthcheck
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
 
-// Avoid 502s for the browser's favicon request
+// Avoid 502 for favicon
 app.get("/favicon.ico", (req, res) => {
   res.status(204).end();
 });
 
-// If nothing matched above, return a fast 404
+// Fast 404 for everything else
 app.use((req, res) => {
   res.status(404).send("Not found");
 });
 
-// IMPORTANT: listen on PORT and 0.0.0.0 so Railway can reach it
+// IMPORTANT: listen on 0.0.0.0
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listening on ${PORT}`);
 });
